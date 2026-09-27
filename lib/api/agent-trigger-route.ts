@@ -357,7 +357,7 @@ export const createAgentTriggerPost =
         regenerate,
         temporary,
         sandboxPreference,
-        agentPermissionMode = "full_access",
+        agentPermissionMode = "ask_approval",
         selectedModel: rawSelectedModel,
         isAutoContinue,
         limitRescue,
