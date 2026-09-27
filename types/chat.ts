@@ -18,7 +18,10 @@ export const AGENT_PERMISSION_MODES: readonly AgentPermissionMode[] = [
   "ask_approval",
 ];
 
-export const DEFAULT_AGENT_PERMISSION_MODE: AgentPermissionMode = "full_access";
+// New Agent sessions require an explicit choice before commands or file edits
+// can run without approval. Full access remains available as an opt-in.
+export const DEFAULT_AGENT_PERMISSION_MODE: AgentPermissionMode =
+  "ask_approval";
 
 export function isAgentPermissionMode(
   value: unknown,

@@ -1,6 +1,7 @@
 import {
   coerceAgentPermissionMode,
   coerceSelectedModel,
+  DEFAULT_AGENT_PERMISSION_MODE,
   isChatMode,
   type AgentPermissionMode,
   type ChatMode,
@@ -36,7 +37,9 @@ export const CHAT_MODE_STORAGE_KEY = "chat_mode";
 const DRAFT_ATTACHMENT_RESTORE_TTL_MS = 24 * 60 * 60 * 1000;
 const HAS_AUTHENTICATED_BEFORE_STORAGE_KEY = "hackerai_has_authed_before";
 const SELECTED_MODEL_STORAGE_KEY = "selected_model";
-const AGENT_PERMISSION_MODE_STORAGE_KEY = "agent_permission_mode";
+// A new key resets earlier implicit full-access selections once. Subsequent
+// explicit choices in the selector persist under this key.
+const AGENT_PERMISSION_MODE_STORAGE_KEY = "agent_permission_mode_v2";
 
 const isBrowser = (): boolean => typeof window !== "undefined";
 
@@ -87,13 +90,13 @@ export const writeChatMode = (mode: ChatMode): void => {
 };
 
 export const readAgentPermissionMode = (): AgentPermissionMode => {
-  if (!isBrowser()) return "full_access";
+  if (!isBrowser()) return DEFAULT_AGENT_PERMISSION_MODE;
   try {
     return coerceAgentPermissionMode(
       window.localStorage.getItem(AGENT_PERMISSION_MODE_STORAGE_KEY),
     );
   } catch {
-    return "full_access";
+    return DEFAULT_AGENT_PERMISSION_MODE;
   }
 };
 

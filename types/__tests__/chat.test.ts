@@ -1,10 +1,21 @@
 import {
+  DEFAULT_AGENT_PERMISSION_MODE,
+  coerceAgentPermissionMode,
   canUseExtraUsage,
   canUseMaxModel,
   normalizeMaxModelForSubscription,
   normalizeSelectedModelForSubscription,
   normalizeSelectedModelOverrideForSubscription,
 } from "../chat";
+
+describe("Agent permission defaults", () => {
+  it("requires approval for missing or invalid modes while preserving explicit full access", () => {
+    expect(DEFAULT_AGENT_PERMISSION_MODE).toBe("ask_approval");
+    expect(coerceAgentPermissionMode(undefined)).toBe("ask_approval");
+    expect(coerceAgentPermissionMode("invalid")).toBe("ask_approval");
+    expect(coerceAgentPermissionMode("full_access")).toBe("full_access");
+  });
+});
 
 describe("normalizeSelectedModelForSubscription", () => {
   it("forces free users to auto even when a paid model is stored", () => {
